@@ -1,5 +1,5 @@
-<!-- [Android] MainApplication에 dagger, WorkManager 적용하기 -->
-<!-- Android dagger Hilt WorkManager androidx Configuration-->
+<!-- [Android] WorkManager 초기화하기 -->
+<!-- Android  WorkManager androidx Configuration-->
 
 # WorkManager란?
 ---
@@ -44,5 +44,44 @@ sunflower를 살펴 보면 MainApplication 클래스에서  `WorkManager`의 `Co
 >**Configuration.Provider**
 >- `WorkManager`에 `Configuration`을 제공하는 인터페이스이다
 >- 요구사항대로 `WorkManager`를 초기화한다
->**Configuration**
 >
+>**Configuration**
+>객체로서, 초기화를 통해 `WorkManager`를 커스터마이징 하기 위해 사용된다.
+>기본적으로 `WorkManager`는 앱이 시작될 때 대부분의 앱에 적합한 합리적인 옵션을 사용하여 자동으로 구성되는데, `WorkManager`가 작업을 관리하고 예약하는 방법을 더 제어해야 하는 경우 `WorkManager`를 직접 초기화하여 `WorkManager` 구성을 맞춤설정할 수 있다.
+
+#### `WorkManager`를 맞춤 초기화하는 방법
+**주문형 초기화(on-demand initialization)** 를 사용하는 것이 좋다. (단, WorkManager 2.1.0 이상에서 지원)
+on-demand방식을 적용하면 `WorkManager`가 앱이 시작될 때마다가 아닌, 구성요소가 필요할 때만 만들어지고 앱 시작 성능이 향상된다.
+만약 자신의 프로젝트에서 사용하는 WorkManager 라이브러리가 2.6 버전 이상이라면 [공식문서](https://developer.android.google.cn/topic/libraries/architecture/workmanager/advanced/custom-configuration#on-demand)를 참고하길 바란다. 나는 2.4 버전이기에 해당 버전을 기준으로 해결방법을 적어보면...
+- AndroidManifest.xml 파일에서 provider 태그에서 `workmanager-init` 을 삭제한다
+  ```xml
+  <provider
+    android:name="androidx.work.impl.WorkManagerInitializer"
+    android:authorities="${applicationId}.workmanager-init"
+    tools:node="remove" />
+  ```
+- Application 클래스에서 Configuration.Provider 인터페이스를 구현하고, `getWorkManagerConfiguration()`를 override하여 자체 구현한다.
+  ```kotlin
+  import androidx.work.Configuration
+
+  class MainApplication : Application(), Configuration.Provider {
+    override fun getWorkManagerConfiguration(): Configuration =
+        Configuration.Builder().build()
+  }
+  ```
+- build.gradle(project)
+  ```gradle
+  ext {
+    ...
+    workVersion = '2.4.0'
+    ...
+  }
+  ```
+- build.gradle(app)
+  ```gradle
+  dependencies {
+    ...
+    implementation "androidx.work:work-runtime-ktx:$rootProject.workVersion"
+    ...
+  }
+  ```
