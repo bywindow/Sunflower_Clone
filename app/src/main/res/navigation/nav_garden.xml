@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--메인 화면 -> 세부 설명 화면 -> 리스트 선택 화면-->
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_garden"
+    >
+<!--메인화면-->
+    <fragment
+        android:id="@+id/main_view_fragment"
+        >
+        <action
+            android:id="@+id/action_main_view_to_plant_detail"
+            app:destination="@id/plant_detail_fragment" />
+
+    </fragment>
+
+<!--세부 설명 화면-->
+    <fragment
+        android:id="@+id/plant_detail_fragment"
+        >
+        <action
+            android:id="@+id/action_plant_detail_to_plant_list"
+            app:destination="@id/plant_list_fragment" />
+
+    </fragment>
+
+<!--리스트 선택 화면-->
+    <fragment
+        android:id="@+id/plant_list_fragment"
+        >
+
+    </fragment>
+
+</navigation>

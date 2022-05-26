@@ -43,9 +43,14 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    //fragment
+    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    //navigation
+    implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0'
+    implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0'
     //kotlin + coroutines
     implementation "androidx.work:work-runtime-ktx:$rootProject.workVersion"
-    //
+    //dagger
     implementation "com.google.dagger:hilt-android:$rootProject.hiltVersion"
 
     testImplementation 'junit:junit:4.+'
